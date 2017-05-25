@@ -1,0 +1,16 @@
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\Compare.exe.config
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\Compare.exe
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\Compare.pdb
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.csprojResolveAssemblyReference.cache
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\MainWindow.g.cs
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\App.g.cs
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare_MarkupCompile.cache
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare_MarkupCompile.lref
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\MainWindow.baml
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.g.resources
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.Properties.Resources.resources
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.csproj.GenerateResource.Cache
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.exe
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.pdb
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\EPPlus.dll
+c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\EPPlus.xml

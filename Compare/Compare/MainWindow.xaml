@@ -1,0 +1,15 @@
+﻿<Window x:Class="Compare.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Compare"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="355.6" Width="484.867">
+    <Grid Margin="0,0,2,0">
+        <Button Name="LookupFolderButton" Content="Lookup Folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick"/>
+        <Label Width="Auto" Height="Auto" Name="LookupFolderLabel" HorizontalAlignment="Left" Margin="115,7,0,0" VerticalAlignment="Top" />
+        <Button Name="AddContentButton" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelClick"/>
+        <ListBox Name="ExcelListBox" Margin="10,60,5,38"/>
+    </Grid>
+</Window>
