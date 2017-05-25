@@ -14,3 +14,19 @@ c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\
 c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\obj\Debug\Compare.pdb
 c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\EPPlus.dll
 c:\users\thomas\documents\visual studio 2017\Projects\Compare\Compare\bin\Debug\EPPlus.xml
+E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.exe.config
+E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.exe
+E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.pdb
+E:\GIT\Foto-elite\Compare\Compare\bin\Debug\EPPlus.dll
+E:\GIT\Foto-elite\Compare\Compare\bin\Debug\EPPlus.xml
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.csprojResolveAssemblyReference.cache
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\MainWindow.g.cs
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\App.g.cs
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare_MarkupCompile.cache
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare_MarkupCompile.lref
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\MainWindow.baml
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.g.resources
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.Properties.Resources.resources
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.csproj.GenerateResource.Cache
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.exe
+E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.pdb
