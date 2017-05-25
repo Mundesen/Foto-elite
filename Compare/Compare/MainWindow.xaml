@@ -11,5 +11,6 @@
         <Label Width="Auto" Height="Auto" Name="LookupFolderLabel" HorizontalAlignment="Left" Margin="115,7,0,0" VerticalAlignment="Top" />
         <Button Name="AddContentButton" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelClick"/>
         <ListBox Name="ExcelListBox" Margin="10,60,5,38"/>
+        <Button Content="Du tør ikke klikke!" HorizontalAlignment="Left" Margin="198,35,0,0" VerticalAlignment="Top" Width="122" Click="Button_Click"/>
     </Grid>
 </Window>

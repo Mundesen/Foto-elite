@@ -64,5 +64,10 @@ namespace Compare
                 LookupFolderLabel.Content = fbd.SelectedPath;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.MessageBox.Show("BØH!");
+        }
     }
 }
