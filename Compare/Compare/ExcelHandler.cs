@@ -24,7 +24,7 @@ namespace Compare
         {
             var result = new List<string>();
             var fileNames = Directory.GetFiles(lookFolderFilePath).ToList();
-            foreach(var fileName in fileNames)
+            foreach (var fileName in fileNames)
             {
                 var name = Path.GetFileNameWithoutExtension(fileName);
                 result.Add(name);
@@ -33,7 +33,7 @@ namespace Compare
             return result;
         }
 
-        public List<string> StartExcelWork()
+        public List<string> StartExcelWork(bool onlyMissingPersons)
         {
             var result = new List<string>();
 
@@ -51,7 +51,14 @@ namespace Compare
                         {
                             var person = worksheet.Cells[i + 1, 3].Value + " " + worksheet.Cells[i + 1, 4].Value;
 
-                            if (!FileNames.Exists(x => x.Replace(" ", "").ToLower().Contains(person.Replace(" ", "").ToLower())))
+                            if (onlyMissingPersons)
+                            {
+                                if (!FileNames.Exists(p => p.Replace(" ", "").ToLower().Contains(person.Replace(" ", "").ToLower())))
+                                {
+                                    result.Add(person);
+                                }
+                            }
+                            else
                             {
                                 result.Add(person);
                             }
@@ -62,7 +69,32 @@ namespace Compare
             }
             catch (Exception e)
             {
-                return new List<string> { "File is open!" };
+                return new List<string> { e.Message };
+            }
+        }
+
+        internal static bool SaveItemsToExcelFile(List<string> listBoxItemsAsStrings, string file)
+        {
+            try
+            {
+                using (var package = new ExcelPackage(new FileInfo(file)))
+                {
+                    var wb = package.Workbook;
+                    var ws = wb.Worksheets.Add("Sheet1");
+
+                    for (var i = 1; i <= listBoxItemsAsStrings.Count; i++)
+                    {
+                        ws.Cells[i, 1].Value = listBoxItemsAsStrings[i - 1];
+                    }
+
+                    package.Save();
+
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
     }

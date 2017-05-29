@@ -5,12 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Compare"
         mc:Ignorable="d"
-        Title="MainWindow" Height="355.6" Width="484.867">
-    <Grid Margin="0,0,2,0">
-        <Button Name="LookupFolderButton" Content="Lookup Folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick"/>
-        <Label Width="Auto" Height="Auto" Name="LookupFolderLabel" HorizontalAlignment="Left" Margin="115,7,0,0" VerticalAlignment="Top" />
-        <Button Name="AddContentButton" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelClick"/>
-        <ListBox Name="ExcelListBox" Margin="10,60,5,38"/>
-        <Button Content="Du tør ikke klikke!" HorizontalAlignment="Left" Margin="198,35,0,0" VerticalAlignment="Top" Width="122" Click="Button_Click"/>
+        Title="MainWindow" Height="457.064" Width="684.952">
+    <Grid Margin="0,0,2,0" RenderTransformOrigin="0.501,0.51">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="0*"/>
+            <RowDefinition Height="35*"/>
+        </Grid.RowDefinitions>
+        <Button Name="LookupFolderButton" Content="Lookup Folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick" Height="20"/>
+        <Label Width="Auto" Height="Auto" Name="LookupFolderLabel" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.4" />
+        <Button Name="AddContentButton" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelClick" Height="20"/>
+        <ListBox Name="ExcelListBox1" Margin="10,60,347,53" Grid.RowSpan="3" SelectionChanged="ExcelListBox1_SelectionChanged"/>
+        <ListBox Name="ExcelListBox" Margin="0,60,10,53" Grid.RowSpan="3" HorizontalAlignment="Right" Width="318" RenderTransformOrigin="0.512,0.504"/>
+        <Button Content="Save Excel File" HorizontalAlignment="Left" Margin="347,0,0,28" Width="100" Click="Button_Click" Grid.Row="2" Height="20" VerticalAlignment="Bottom"/>
+        <Button Content="Rename Files" Margin="0,10,10,0" VerticalAlignment="Top" Click="Button_Click1" HorizontalAlignment="Right" Width="100" Height="20"/>
     </Grid>
 </Window>
