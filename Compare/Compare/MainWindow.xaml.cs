@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.IO;
+using Compare.Models;
 
 namespace Compare
 {
@@ -30,7 +31,7 @@ namespace Compare
 
         private void ReadExcelClick(object sender, RoutedEventArgs e)
         {
-            ExcelListBox.Items.Clear();
+            ExcelListBox.ItemsSource = null;
 
             if (string.IsNullOrEmpty(LookupFolderLabel.Content as string))
             {
@@ -49,22 +50,13 @@ namespace Compare
                 var excelHandler = new ExcelHandler(filePath, lookupFolder);
 
                 var allItems = excelHandler.StartExcelWork(false);
-                foreach (var item in allItems)
-                {
-                    ListBoxItem itm = new ListBoxItem();
-                    itm.Content = item;
 
-                    ExcelListBox1.Items.Add(itm);
-                }
-
+                ExcelListBox1.ItemsSource = allItems;
+                ExcelListBox1.DisplayMemberPath = "FullName";
+                
                 var missingItems = excelHandler.StartExcelWork(true);
-                foreach(var item in missingItems)
-                {
-                    ListBoxItem itm = new ListBoxItem();
-                    itm.Content = item;
-
-                    ExcelListBox.Items.Add(itm);
-                }
+                ExcelListBox.ItemsSource = missingItems;
+                ExcelListBox.DisplayMemberPath = "FullName";
             }
         }
 
@@ -90,9 +82,9 @@ namespace Compare
                 if (File.Exists(file))
                     File.Delete(file);
                 
-                var listBoxItemsAsStrings = GetListBoxItemsAsStrings();
+                var persons = GetListBoxItems(ExcelListBox.Items);
 
-                bool saved = ExcelHandler.SaveItemsToExcelFile(listBoxItemsAsStrings, file);
+                bool saved = ExcelHandler.SaveItemsToExcelFile(persons, file);
 
                 if (saved)
                     System.Windows.Forms.MessageBox.Show("File saved!");
@@ -101,13 +93,13 @@ namespace Compare
             }            
         }
 
-        private List<string> GetListBoxItemsAsStrings()
+        private List<Person> GetListBoxItems(ItemCollection items)
         {
-            var result = new List<string>();
+            var result = new List<Person>();
 
-            foreach(var item in ExcelListBox.Items)
+            foreach (var item in items)
             {
-                result.Add((item as ListBoxItem).Content.ToString());
+                result.Add((item as Person));
             }
 
             return result;
@@ -140,12 +132,35 @@ namespace Compare
             }
         }
 
-        private void ExcelListBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            ExcelListBox.ItemsSource = null;
+            ExcelListBox1.ItemsSource = null;
+            LookupFolderLabel.Content = null; 
         }
 
-        
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog();
+            dialog.Filter = "Excel Files (*.xlsx)|*.xlsx";
+            dialog.OverwritePrompt = true;
+            var result = dialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                var file = dialog.FileName;
+
+                if (File.Exists(file))
+                    File.Delete(file);
+
+                bool saved = ExcelHandler.SaveItemsToExcelFile(GetListBoxItems(ExcelListBox1.Items), file);
+
+                if (saved)
+                    System.Windows.Forms.MessageBox.Show("File saved!");
+                else
+                    System.Windows.Forms.MessageBox.Show("File NOT saved!");
+            }
+        }
     }
 
 }

@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Compare.Models;
+using System.Collections;
 
 namespace Compare
 {
@@ -13,11 +15,13 @@ namespace Compare
     {
         private string ExcelFilePath { get; set; }
         private List<string> FileNames { get; set; }
+        private string LookupFolder { get; set; }
 
         public ExcelHandler(string filePath, string lookFolderFilePath)
         {
             ExcelFilePath = filePath;
             FileNames = GetFilesNames(lookFolderFilePath);
+            LookupFolder = lookFolderFilePath;
         }
 
         private List<string> GetFilesNames(string lookFolderFilePath)
@@ -33,9 +37,9 @@ namespace Compare
             return result;
         }
 
-        public List<string> StartExcelWork(bool onlyMissingPersons)
+        public List<Person> StartExcelWork(bool onlyMissingPersons)
         {
-            var result = new List<string>();
+            var result = new List<Person>();
 
             try
             {
@@ -49,11 +53,18 @@ namespace Compare
 
                         for (int i = 1; i < end.Row; i++)
                         {
-                            var person = worksheet.Cells[i + 1, 3].Value + " " + worksheet.Cells[i + 1, 4].Value;
+                            var person = new Person
+                            {
+                                Name = worksheet.Cells[i + 1, 3].Value?.ToString().Trim(),
+                                Surname = worksheet.Cells[i + 1, 4].Value?.ToString().Trim(),
+                                Town = worksheet.Cells[i + 1, 5].Value?.ToString().Trim()
+                            };
+                            person.FullName = person.Name + " " + person.Surname;
+                            person.Path = Path.Combine(LookupFolder, person.FullName) + ".jpg";
 
                             if (onlyMissingPersons)
                             {
-                                if (!FileNames.Exists(p => p.Replace(" ", "").ToLower().Contains(person.Replace(" ", "").ToLower())))
+                                if (!FileNames.Exists(p => p.Replace(" ", "").ToLower().Contains(person.Name?.ToLower().Replace(" ", "") + person.Surname?.ToLower().Replace(" ", ""))))
                                 {
                                     result.Add(person);
                                 }
@@ -69,11 +80,11 @@ namespace Compare
             }
             catch (Exception e)
             {
-                return new List<string> { e.Message };
+                throw;
             }
         }
 
-        internal static bool SaveItemsToExcelFile(List<string> listBoxItemsAsStrings, string file)
+        internal static bool SaveItemsToExcelFile(List<Person> persons, string file)
         {
             try
             {
@@ -82,9 +93,13 @@ namespace Compare
                     var wb = package.Workbook;
                     var ws = wb.Worksheets.Add("Sheet1");
 
-                    for (var i = 1; i <= listBoxItemsAsStrings.Count; i++)
+                    for (var i = 0; i < persons.Count; i++)
                     {
-                        ws.Cells[i, 1].Value = listBoxItemsAsStrings[i - 1];
+                        var person = persons[i];
+                        ws.Cells[i + 1, 1].Value = person.Name;
+                        ws.Cells[i + 1, 2].Value = person.Surname;
+                        ws.Cells[i + 1, 3].Value = person.Town;
+                        ws.Cells[i + 1, 4].Value = person.Path;
                     }
 
                     package.Save();
