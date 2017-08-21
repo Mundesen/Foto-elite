@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Compare"
         mc:Ignorable="d"
-        Title="MainWindow" Height="457.064" Width="684.952">
+        Title="Aarsbillede compare" Height="457.064" Width="684.952">
     <Grid Margin="0,0,2,0" RenderTransformOrigin="0.501,0.51">
         <Grid.RowDefinitions>
             <RowDefinition Height="36*"/>
@@ -18,8 +18,13 @@
         <ListBox Name="ExcelListBox1" Margin="10,60,347,53" Grid.RowSpan="3" />
         <ListBox Name="ExcelListBox" Margin="0,60,10,53" Grid.RowSpan="3" HorizontalAlignment="Right" Width="318" RenderTransformOrigin="0.512,0.504"/>
         <Button Content="Save Excel File" HorizontalAlignment="Left" Margin="347,0,0,28" Width="100" Click="Button_Click" Grid.Row="2" Height="20" VerticalAlignment="Bottom"/>
-        <Button Content="Rename Files" Margin="0,10,10,0" VerticalAlignment="Top" Click="Button_Click1" HorizontalAlignment="Right" Width="100" Height="20"/>
-        <Button Content="Clear All" Margin="0,35,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="Button_Click_1"/>
+        <Button Content="Rename Files" Margin="0,35,460,0" VerticalAlignment="Top" Click="Button_Click1" HorizontalAlignment="Right" Width="100" Height="20"/>
+        <Button Content="Clear All" Margin="0,162,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="Button_Click_1" Grid.Row="2"/>
         <Button Content="Save comp. file" HorizontalAlignment="Left" Margin="10,162,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100" Height="20" Click="Button_Click_2"/>
+        <Button Content="Email Files" Margin="0,10,10,0" VerticalAlignment="Top" Click="Button_Click2" HorizontalAlignment="Right" Width="100" Height="20"/>
+        <Button Content="Sort Files" Margin="0,35,10,0" VerticalAlignment="Top" Click="Button_Click3" HorizontalAlignment="Right" Width="100" Height="20"/>
+        <Button Content="Read Order List" Margin="0,35,115,0" VerticalAlignment="Top" Click="Button_Click4" HorizontalAlignment="Right" Width="100" Height="20"/>
+        <Button x:Name="LookupFolderButton_Copy" Content="LookupOrderFiles" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick" Height="20"/>
+
     </Grid>
 </Window>
