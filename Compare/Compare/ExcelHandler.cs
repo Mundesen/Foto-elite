@@ -165,9 +165,14 @@ namespace Compare
                 using (var package = new ExcelPackage(new FileInfo(file)))
                 {
                     var wb = package.Workbook;
-                    var ws = wb.Worksheets.Add("Sheet1");
+                    var ws = wb.Worksheets.Add(ConfigurationManager.AppSettings["PhotoFileWorkSheet"]);
 
-                    for (var i = 0; i < persons.Count; i++)
+                    ws.Cells[1, 1].Value = "Fornavn";
+                    ws.Cells[1, 2].Value = "efternavn";
+                    ws.Cells[1, 3].Value = "by";
+                    ws.Cells[1, 4].Value = "@billede";
+
+                    for (var i = 1; i < persons.Count; i++)
                     {
                         var person = persons[i];
                         ws.Cells[i + 1, 1].Value = person.Name;
