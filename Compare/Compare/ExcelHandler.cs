@@ -172,13 +172,14 @@ namespace Compare
                     ws.Cells[1, 3].Value = "by";
                     ws.Cells[1, 4].Value = "@billede";
 
-                    for (var i = 1; i < persons.Count; i++)
+                    for (var i = 1; i < persons.Count + 1; i++)
                     {
-                        var person = persons[i];
-                        ws.Cells[i + 1, 1].Value = person.Name;
-                        ws.Cells[i + 1, 2].Value = person.Surname;
-                        ws.Cells[i + 1, 3].Value = person.Town;
-                        ws.Cells[i + 1, 4].Value = person.Path;
+                        var row = i + 1;
+                        var person = persons[i - 1];
+                        ws.Cells[row, 1].Value = person.Name;
+                        ws.Cells[row, 2].Value = person.Surname;
+                        ws.Cells[row, 3].Value = person.Town;
+                        ws.Cells[row, 4].Value = person.Path;
                     }
 
                     package.Save();
