@@ -1,0 +1,20 @@
+﻿Hej {firstName},
+
+Tak for din bestilling hos Aarsbilleder.
+Det billede du selv har udvalgt til skolens aarsbillede 2017/2018 er vedhæftet som billedfil.
+Vi har redigeret billedfilen, og håber du er tilfreds med resultatet.
+Dine print afleveres på skolen.
+
+Ønsker du at bestille flere print kan det gøres her: {schoolUrl}
+
+Dit udvalgte billedenummer er: {chosenImage}
+
+OBS:
+Du kan ikke se dit udvalgte billede i webshoppen.
+Har du spørgsmål eller andet er du velkommen til at kontakte os – mail, ring, sms :)
+
+Mange glade hilsner
+Aarsbilleder
+
+Mail: Info@aarsbilleder.dk 
+-Denne mail er automatisk genereret, og kan derfor ikke besvares.

@@ -23,17 +23,23 @@ namespace Compare
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public List<string> ExcelItems = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
+
+            if (Globals.Production)
+            {
+                System.Windows.MessageBox.Show("Programmet kører i Production mode!","Production mode!",MessageBoxButton.OK,MessageBoxImage.Warning);
+            }
         }
 
-        private void ReadExcelClick(object sender, RoutedEventArgs e)
+        private void ReadExcelPhotoFile_Click(object sender, RoutedEventArgs e)
         {
-            ExcelListBox.ItemsSource = null;
+            RightMainWindow.ItemsSource = null;
 
-            if (string.IsNullOrEmpty(LookupFolderLabel.Content as string))
+            if (string.IsNullOrEmpty(ImageLookupFolderLabel.Content as string))
             {
                 System.Windows.MessageBox.Show("Choose folder");
                 return;
@@ -46,17 +52,84 @@ namespace Compare
             if (dialogResult == System.Windows.Forms.DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
-                var lookupFolder = LookupFolderLabel.Content as string;
+                var lookupFolder = ImageLookupFolderLabel.Content as string;
                 var excelHandler = new ExcelHandler(filePath, lookupFolder);
 
-                var allItems = excelHandler.StartExcelWork(false);
+                var allItems = excelHandler.StartReadExcelPhotoFile(false);
 
-                ExcelListBox1.ItemsSource = allItems;
-                ExcelListBox1.DisplayMemberPath = "FullName";
+                LeftMainWindow.ItemsSource = allItems;
+                LeftMainWindow.DisplayMemberPath = "FullName";
                 
-                var missingItems = excelHandler.StartExcelWork(true);
-                ExcelListBox.ItemsSource = missingItems;
-                ExcelListBox.DisplayMemberPath = "FullName";
+                var missingItems = excelHandler.StartReadExcelPhotoFile(true);
+                RightMainWindow.ItemsSource = missingItems;
+                RightMainWindow.DisplayMemberPath = "FullName";
+            }
+        }
+
+        private void ReadOrderList_Click(object sender, RoutedEventArgs e)
+        {
+            RightMainWindow.ItemsSource = null;
+
+            if (string.IsNullOrEmpty(ImageLookupFolderLabel.Content as string))
+            {
+                System.Windows.MessageBox.Show("Choose folder");
+                return;
+            }
+
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx";
+            var dialogResult = openFileDialog.ShowDialog();
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                var filePath = openFileDialog.FileName;
+                var imageLookupFolder = ImageLookupFolderLabel.Content as string;
+                var excelHandler = new ExcelHandler(filePath, imageLookupFolder);
+
+                try
+                {
+                    excelHandler.StartReadExcelOrderListFile();
+
+                    //Vis resultat
+                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+                }
+                catch(Exception ex)
+                {
+                    System.Windows.MessageBox.Show(string.Format("Der skete følgende fejl: {0}", ex.Message));
+                }
+            }
+        }
+
+        private void SendMails_Click(object sender, RoutedEventArgs e)
+        {
+            var result = System.Windows.MessageBox.Show("Are you sure you want to send emails?", "Send Emails", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    if (Globals.ExcelOrderListReady.Count == 0)
+                    {
+                        System.Windows.MessageBox.Show("No orders ready!");
+                        return;
+                    }
+                    new MailBodySelectorWindow().ShowDialog();
+                    if (File.ReadAllText(Globals.SelectedMailBody).Contains("{schoolUrl}"))
+                        new SchoolUrlView().ShowDialog();
+
+                    var mailsSend = MailHandler.SendMails();
+
+                    //Vis resultat
+                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+
+                    System.Windows.MessageBox.Show(string.Format("{0}/{1} mails send!", mailsSend, Globals.ExcelOrderListReady.Count));
+                }
+                catch(Exception ex)
+                {
+                    System.Windows.MessageBox.Show(string.Format("Der skete følgende fejl: {0}", ex.Message));
+                }
             }
         }
 
@@ -65,7 +138,7 @@ namespace Compare
             var fbd = new FolderBrowserDialog();
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                LookupFolderLabel.Content = fbd.SelectedPath;
+                ImageLookupFolderLabel.Content = fbd.SelectedPath;
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -82,7 +155,7 @@ namespace Compare
                 if (File.Exists(file))
                     File.Delete(file);
                 
-                var persons = GetListBoxItems(ExcelListBox.Items);
+                var persons = GetListBoxItems(RightMainWindow.Items);
 
                 bool saved = ExcelHandler.SaveItemsToExcelFile(persons, file);
 
@@ -107,7 +180,7 @@ namespace Compare
 
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(LookupFolderLabel.Content as string))
+            if (string.IsNullOrEmpty(ImageLookupFolderLabel.Content as string))
             {
                 System.Windows.MessageBox.Show("Choose folder");
                 return;
@@ -117,7 +190,7 @@ namespace Compare
 
             if (result == MessageBoxResult.Yes)
             {
-                var failedFiles = FileHandler.RenameFiles(LookupFolderLabel.Content.ToString());
+                var failedFiles = FileHandler.RenameFiles(ImageLookupFolderLabel.Content.ToString());
                 if (failedFiles.Count == 0)
                     System.Windows.MessageBox.Show("Files renamed!");
                 else
@@ -134,9 +207,9 @@ namespace Compare
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ExcelListBox.ItemsSource = null;
-            ExcelListBox1.ItemsSource = null;
-            LookupFolderLabel.Content = null; 
+            RightMainWindow.ItemsSource = null;
+            LeftMainWindow.ItemsSource = null;
+            ImageLookupFolderLabel.Content = null; 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -153,13 +226,27 @@ namespace Compare
                 if (File.Exists(file))
                     File.Delete(file);
 
-                bool saved = ExcelHandler.SaveItemsToExcelFile(GetListBoxItems(ExcelListBox1.Items), file);
+                bool saved = ExcelHandler.SaveItemsToExcelFile(GetListBoxItems(LeftMainWindow.Items), file);
 
                 if (saved)
                     System.Windows.Forms.MessageBox.Show("File saved!");
                 else
                     System.Windows.Forms.MessageBox.Show("File NOT saved!");
             }
+        }
+
+        private void SortFiles_Click(object sender, RoutedEventArgs e)
+        {
+            //Diverse tjeks
+            if (string.IsNullOrEmpty(Globals.ImageLookupFolder) || Globals.ExcelOrderListReady.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Billede-mappe ikke valgt, eller ordrer ikke indlæst!");
+                return;
+            }
+
+            FileHandler.SortFilesAndCreateFolders();
+
+            System.Windows.MessageBox.Show("Filerne og mapper er sorteret.");
         }
     }
 

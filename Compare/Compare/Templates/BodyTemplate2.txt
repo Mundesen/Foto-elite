@@ -1,0 +1,11 @@
+﻿Hej {firstName},
+
+Vi fremsender som aftalt dit valgte billede.
+
+Har du spørgsmål eller andet er du velkommen til at kontakte os – mail, ring, sms :)
+
+Mange glade hilsner
+Aarsbilleder
+
+Mail: Info@aarsbilleder.dk
+-Denne mail er automatisk genereret, og kan derfor ikke besvares.
