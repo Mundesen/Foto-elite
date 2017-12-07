@@ -33,7 +33,6 @@ C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.exe.manifest
 C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.application
 C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.exe
 C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.pdb
-C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.csprojResolveAssemblyReference.cache
 E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.exe.config
 E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.exe.manifest
 E:\GIT\Foto-elite\Compare\Compare\bin\Debug\Compare.application
@@ -58,3 +57,8 @@ E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.application
 E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.exe
 E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.pdb
 E:\GIT\Foto-elite\Compare\Compare\obj\Debug\Compare.csprojResolveAssemblyReference.cache
+C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\MailBodySelectorWindow.g.cs
+C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\SchoolUrlView.g.cs
+C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\MailBodySelectorWindow.baml
+C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\SchoolUrlView.baml
+C:\Harving\git\Foto-elite\Compare\Compare\obj\Debug\Compare.csprojResolveAssemblyReference.cache

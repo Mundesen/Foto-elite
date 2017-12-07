@@ -1,4 +1,4 @@
-﻿using Compare.Models;
+﻿using Compare.Models; 
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,16 +69,33 @@ namespace Compare
                 var currentFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderColor.Replace("/", ""), string.IsNullOrEmpty(currentOrder.OrderImagePackage) ? currentOrder.OrderProduct : currentOrder.OrderImagePackage);
                 
                 Directory.CreateDirectory(currentFolder);
-
-                File.Copy(currentOrder.ImageFile, Path.Combine(currentFolder, Path.GetFileName(currentOrder.ImageFile)));
+                
+                var imageFileName = GetNewImageName(currentFolder, currentOrder.ImageFile);
+                var destFilePath = Path.Combine(currentFolder, imageFileName);
+                
+                File.Copy(currentOrder.ImageFile, destFilePath);
 
                 if (!string.IsNullOrEmpty(currentOrder.OrderExtraImagePackage))
                 {
-                    var extraOrderFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderExtraImagePackage);
+                    var extraOrderFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderExtraImagePackage.Replace("/",""));
+
                     Directory.CreateDirectory(extraOrderFolder);
-                    File.Copy(currentOrder.ImageFile, Path.Combine(extraOrderFolder, Path.GetFileName(currentOrder.ImageFile)));
+
+                    imageFileName = GetNewImageName(extraOrderFolder, currentOrder.ImageFile);
+                    
+                    File.Copy(currentOrder.ImageFile, Path.Combine(extraOrderFolder, imageFileName));
                 }
             }
+        }
+
+        private static string GetNewImageName(string folder, string imageName)
+        {
+            return GetNumberOfDuplicateImages(folder, imageName) == 0 ? Path.GetFileName(imageName) : Path.GetFileNameWithoutExtension(Path.GetFileName(imageName)) + "_" + GetNumberOfDuplicateImages(folder, imageName) + Path.GetExtension(imageName);
+        }
+
+        private static int GetNumberOfDuplicateImages(string folder, string imageName)
+        {
+            return Directory.GetFiles(folder).Count(x => Path.GetFileNameWithoutExtension(x).StartsWith(Path.GetFileNameWithoutExtension(imageName)));
         }
     }
 }
