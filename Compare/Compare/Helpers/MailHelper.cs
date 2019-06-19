@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading;
 
-namespace Compare
+namespace Compare.Helpers
 {
-    class MailHandler
+    class MailHelper
     {
         internal static int SendMails()
         {

@@ -1,4 +1,5 @@
-﻿using Compare.Models;
+﻿using Compare.Helpers;
+using Compare.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,9 +7,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using Compare.Helpers;
 
-namespace Compare
+namespace Compare.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -110,7 +110,7 @@ namespace Compare
                     if (File.ReadAllText(Globals.SelectedMailBody).Contains("{schoolUrl}"))
                         new Views.SchoolUrlView().ShowDialog();
 
-                    var mailsSend = MailHandler.SendMails();
+                    var mailsSend = MailHelper.SendMails();
 
                     //Vis resultat
                     LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
