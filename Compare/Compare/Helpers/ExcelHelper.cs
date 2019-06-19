@@ -1,13 +1,10 @@
-﻿using OfficeOpenXml;
+﻿using Compare.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Compare.Models;
-using System.Collections;
 
 namespace Compare.Helpers
 {
