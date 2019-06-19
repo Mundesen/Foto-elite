@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Compare
+namespace Compare.Views
 {
     /// <summary>
-    /// Interaction logic for MailBodySelectorWindow.xaml
+    /// Interaction logic for SchoolLinkView.xaml
     /// </summary>
-    public partial class MailBodySelectorWindow : Window
+    public partial class SchoolUrlView : Window
     {
-        public MailBodySelectorWindow()
+        public SchoolUrlView()
         {
             InitializeComponent();
 
-            mailBodyComboBox.ItemsSource = ConfigurationManager.AppSettings["PathBodyTemplates"].Split(';');
-            mailBodyComboBox.SelectedIndex = 0;
+            SchoolUrlTextBox.Text = Globals.SchoolUrl;
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        private void SchoolUrlOKButton_Click(object sender, RoutedEventArgs e)
         {
-            Globals.SelectedMailBody = mailBodyComboBox.SelectedItem.ToString();
+            Globals.SchoolUrl = SchoolUrlTextBox.Text;
+            this.Close();
+        }
+
+        private void SchoolUrlCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Globals.SchoolUrl = "";
             this.Close();
         }
     }

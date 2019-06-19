@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 using Compare.Models;
 using System.Collections;
 
-namespace Compare
+namespace Compare.Helpers
 {
-    public class ExcelHandler
+    public class ExcelHelper
     {
-        public ExcelHandler(string filePath, string lookFolderFilePath)
+        public ExcelHelper(string filePath, string lookFolderFilePath)
         {
             Globals.ExcelFilePath = filePath;
-            Globals.FileNames = GetFilesNames(lookFolderFilePath);
+            Globals.FileNames = GetFileNames(lookFolderFilePath);
             Globals.ImageLookupFolder = lookFolderFilePath;
         }
 
-        private List<string> GetFilesNames(string lookFolderFilePath)
+        private List<string> GetFileNames(string lookFolderFilePath)
         {
             var result = new List<string>();
             var fileNames = Directory.GetFiles(lookFolderFilePath).ToList();
@@ -132,7 +132,7 @@ namespace Compare
                             if (!failed)
                             {
                                 var imageFound = false;
-                                var image = FileHandler.GetImageFileForOrder(order, Globals.ImageLookupFolder);
+                                var image = FileHelper.GetImageFileForOrder(order, Globals.ImageLookupFolder);
                                 if (!string.IsNullOrEmpty(image))
                                 {
                                     order.ImageFile = image;

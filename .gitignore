@@ -4,3 +4,7 @@ _ReSharper.*
 bin
 obj
 packages
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal

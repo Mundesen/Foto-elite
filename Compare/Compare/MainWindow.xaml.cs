@@ -1,20 +1,12 @@
-﻿using System.Windows.Input;
+﻿using Compare.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Forms;
-using System.IO;
-using Compare.Models;
+using Compare.Helpers;
 
 namespace Compare
 {
@@ -53,7 +45,7 @@ namespace Compare
             {
                 var filePath = openFileDialog.FileName;
                 var lookupFolder = ImageLookupFolderLabel.Content as string;
-                var excelHandler = new ExcelHandler(filePath, lookupFolder);
+                var excelHandler = new ExcelHelper(filePath, lookupFolder);
 
                 var allItems = excelHandler.StartReadExcelPhotoFile(false);
 
@@ -84,7 +76,7 @@ namespace Compare
             {
                 var filePath = openFileDialog.FileName;
                 var imageLookupFolder = ImageLookupFolderLabel.Content as string;
-                var excelHandler = new ExcelHandler(filePath, imageLookupFolder);
+                var excelHandler = new ExcelHelper(filePath, imageLookupFolder);
 
                 try
                 {
@@ -114,9 +106,9 @@ namespace Compare
                         System.Windows.MessageBox.Show("No orders ready!");
                         return;
                     }
-                    new MailBodySelectorWindow().ShowDialog();
+                    new Views.MailBodySelectorWindow().ShowDialog();
                     if (File.ReadAllText(Globals.SelectedMailBody).Contains("{schoolUrl}"))
-                        new SchoolUrlView().ShowDialog();
+                        new Views.SchoolUrlView().ShowDialog();
 
                     var mailsSend = MailHandler.SendMails();
 
@@ -157,7 +149,7 @@ namespace Compare
                 
                 var persons = GetListBoxItems(RightMainWindow.Items);
 
-                bool saved = ExcelHandler.SaveItemsToExcelFile(persons, file);
+                bool saved = ExcelHelper.SaveItemsToExcelFile(persons, file);
 
                 if (saved)
                     System.Windows.Forms.MessageBox.Show("File saved!");
@@ -190,7 +182,7 @@ namespace Compare
 
             if (result == MessageBoxResult.Yes)
             {
-                var failedFiles = FileHandler.RenameFiles(ImageLookupFolderLabel.Content.ToString());
+                var failedFiles = FileHelper.RenameFiles(ImageLookupFolderLabel.Content.ToString());
                 if (failedFiles.Count == 0)
                     System.Windows.MessageBox.Show("Files renamed!");
                 else
@@ -226,7 +218,7 @@ namespace Compare
                 if (File.Exists(file))
                     File.Delete(file);
 
-                bool saved = ExcelHandler.SaveItemsToExcelFile(GetListBoxItems(LeftMainWindow.Items), file);
+                bool saved = ExcelHelper.SaveItemsToExcelFile(GetListBoxItems(LeftMainWindow.Items), file);
 
                 if (saved)
                     System.Windows.Forms.MessageBox.Show("File saved!");
@@ -244,7 +236,7 @@ namespace Compare
                 return;
             }
 
-            FileHandler.SortFilesAndCreateFolders();
+            FileHelper.SortFilesAndCreateFolders();
 
             System.Windows.MessageBox.Show("Filerne og mapper er sorteret.");
         }

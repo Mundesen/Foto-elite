@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Compare
+namespace Compare.Helpers
 {
-    class FileHandler
+    class FileHelper
     {
         internal static List<string> RenameFiles(string directory)
         {

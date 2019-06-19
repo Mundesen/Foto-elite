@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Button Name="LookupFolderButton" ToolTip="Vælg mappen med billederne!" Content="Get IMG Folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick" Height="20"/>
         <Label Width="Auto" Height="Auto" Name="ImageLookupFolderLabel" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.4" />
-        <Button Name="AddContentButton" ToolTip="Vælg foto excel filen der skal sammenlignes med!" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelPhotoFile_Click" Height="20"/>
+        <Button Name="AddContentButton" ToolTip="Vælg foto excel filen der skal sammenlignes med!" Content="Read CSV" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelPhotoFile_Click" Height="20"/>
         <ListBox Name="LeftMainWindow" Margin="10,85,347,53" Grid.RowSpan="3" />
         <ListBox Name="RightMainWindow" Margin="0,85,10,53" Grid.RowSpan="3" HorizontalAlignment="Right" Width="318" RenderTransformOrigin="0.512,0.504"/>
         <Button Content="Save Excel File" ToolTip="Gem en excel fil med de manglende elever!" HorizontalAlignment="Left" Margin="347,0,0,28" Width="100" Click="Button_Click" Grid.Row="2" Height="20" VerticalAlignment="Bottom"/>
