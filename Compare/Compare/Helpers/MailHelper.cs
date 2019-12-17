@@ -20,41 +20,46 @@ namespace Compare.Helpers
             var user = ConfigurationManager.AppSettings["smtpUser"];
             var password = ConfigurationManager.AppSettings["smtpPassword"];
 
-            var sendMails = new List<string>();
+            var alreadySentMails = new List<string>();
 
-            foreach (var order in Globals.ExcelOrderListReady)
+            if (Globals.Production)
             {
-                if ((sendMails.Contains(order.Email) && Globals.Production) || string.IsNullOrEmpty(order.Email))
-                    continue;
-                
-                var mail = new MailMessage(sendFrom, order.Email);
-                mail.Subject = mailSubject;
-                mail.Body = CreateBody(order);
-                var attachement = new Attachment(order.ImageFile);
-                mail.Attachments.Add(attachement);
-
-                var client = new SmtpClient();
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(user, password);
-                client.Port = port;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.Host = host;
-
-                try
+                foreach (var order in Globals.ExcelOrderListReady)
                 {
-                    client.Send(mail);
-                    sendMails.Add(order.Email);
+                    if (alreadySentMails.Contains(order.Email) || string.IsNullOrEmpty(order.Email))
+                    {
+                        continue;
+                    }
 
-                    counter++;
-                    order.Status = Enums.MailSentStatus.MailSend;
-                }
-                catch (Exception e)
-                {
-                    order.Status = Enums.MailSentStatus.MailNotSent;
-                }
+                    var mail = new MailMessage(sendFrom, order.Email);
+                    mail.Subject = mailSubject;
+                    mail.Body = CreateBody(order);
+                    var attachement = new Attachment(order.ImageFile);
+                    mail.Attachments.Add(attachement);
 
-                Thread.Sleep(5000);
+                    var client = new SmtpClient();
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(user, password);
+                    client.Port = port;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.Host = host;
+
+                    try
+                    {
+                        client.Send(mail);
+                        alreadySentMails.Add(order.Email);
+
+                        counter++;
+                        order.Status = Enums.MailSentStatus.MailSend;
+                    }
+                    catch (Exception e)
+                    {
+                        order.Status = Enums.MailSentStatus.MailNotSent;
+                    }
+
+                    Thread.Sleep(5000);
+                }
             }
 
             return counter;
