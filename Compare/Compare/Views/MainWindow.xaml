@@ -7,23 +7,27 @@
         mc:Ignorable="d"
         Title="Aarsbillede compare" Height="457.064" Width="684.952">
     <Grid Margin="0,0,2,0" RenderTransformOrigin="0.501,0.51">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="302*"/>
+            <ColumnDefinition Width="373*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="36*"/>
             <RowDefinition Height="0*"/>
             <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
         <Button Name="LookupFolderButton" ToolTip="Vælg mappen med billederne!" Content="Get IMG Folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="LookupFolderClick" Height="20"/>
-        <Label Width="Auto" Height="Auto" Name="ImageLookupFolderLabel" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.4" />
+        <Label Width="400" Height="Auto" Name="ImageLookupFolderLabel" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.4" />
         <Button Name="AddContentButton" ToolTip="Vælg foto excel filen der skal sammenlignes med!" Content="Read Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="100" Click="ReadExcelPhotoFile_Click" Height="20"/>
-        <ListBox Name="LeftMainWindow" Margin="10,85,347,53" Grid.RowSpan="3" />
-        <ListBox Name="RightMainWindow" Margin="0,85,10,53" Grid.RowSpan="3" HorizontalAlignment="Right" Width="318" RenderTransformOrigin="0.512,0.504"/>
-        <Button Content="Save Excel File" ToolTip="Gem en excel fil med de manglende elever!" HorizontalAlignment="Left" Margin="347,0,0,28" Width="100" Click="Button_Click" Grid.Row="2" Height="20" VerticalAlignment="Bottom"/>
+        <ListBox Name="LeftMainWindow" Margin="10,85,347,53" Grid.RowSpan="3" Grid.ColumnSpan="2" />
+        <ListBox Name="RightMainWindow" Margin="0,85,10,53" Grid.RowSpan="3" HorizontalAlignment="Right" Width="318" RenderTransformOrigin="0.512,0.504" Grid.Column="1"/>
+        <Button Content="Save Excel File" ToolTip="Gem en excel fil med de manglende elever!" HorizontalAlignment="Left" Margin="45.384,0,0,28" Width="100" Click="Button_Click" Grid.Row="2" Height="20" VerticalAlignment="Bottom" Grid.Column="1"/>
         <Button Content="Rename Files" ToolTip="Her fjernes tal og tegn fra filerne!" Margin="10,60,0,0" VerticalAlignment="Top" Click="Button_Click1" HorizontalAlignment="Left" Width="100" Height="20"/>
-        <Button Content="Clear All" ToolTip="Gendag programmet som fra start!" Margin="0,162,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="Button_Click_1" Grid.Row="2"/>
+        <Button Content="Clear All" ToolTip="Gendag programmet som fra start!" Margin="0,162,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="Button_Click_1" Grid.Row="2" Grid.Column="1"/>
         <Button Content="Save comp. file" ToolTip="Gem en composite excel fil til indesign!" HorizontalAlignment="Left" Margin="10,162,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100" Height="20" Click="Button_Click_2"/>
-        <Button Content="Email Files" ToolTip="Email filerne fra ordrelisten!" Margin="0,10,10,0" VerticalAlignment="Top" Click="SendMails_Click" HorizontalAlignment="Right" Width="100" Height="20"/>
-        <Button Content="Sort Files" ToolTip="Sorter filerne fra ordrelisten!" Margin="0,35,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="SortFiles_Click"/>
-        <Button Content="Read Order List" ToolTip="Indlæs excel ordre listen her!" Margin="0,60,10,0" VerticalAlignment="Top" Click="ReadOrderList_Click" HorizontalAlignment="Right" Width="100" Height="20"/>
+        <Button Content="Email Files" ToolTip="Email filerne fra ordrelisten!" Margin="0,10,10,0" VerticalAlignment="Top" Click="SendMails_Click" HorizontalAlignment="Right" Width="100" Height="20" Grid.Column="1"/>
+        <Button Content="Sort Files" ToolTip="Sorter filerne fra ordrelisten!" Margin="0,35,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="20" Click="SortFiles_Click" Grid.Column="1"/>
+        <Button Content="Read Order List" ToolTip="Indlæs excel ordre listen her!" Margin="0,60,10,0" VerticalAlignment="Top" Click="ReadOrderList_Click" HorizontalAlignment="Right" Width="100" Height="20" Grid.Column="1"/>
 
     </Grid>
 </Window>

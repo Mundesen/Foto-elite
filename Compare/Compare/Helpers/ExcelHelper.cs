@@ -13,21 +13,8 @@ namespace Compare.Helpers
         public ExcelHelper(string filePath, string lookFolderFilePath)
         {
             Globals.ExcelFilePath = filePath;
-            Globals.FileNames = GetFileNames(lookFolderFilePath);
+            Globals.FileNames = FileHelper.GetFileNames(lookFolderFilePath);
             Globals.ImageLookupFolder = lookFolderFilePath;
-        }
-
-        private List<string> GetFileNames(string lookFolderFilePath)
-        {
-            var result = new List<string>();
-            var fileNames = Directory.GetFiles(lookFolderFilePath).ToList();
-            foreach (var fileName in fileNames)
-            {
-                var name = Path.GetFileNameWithoutExtension(fileName);
-                result.Add(name);
-            }
-
-            return result;
         }
 
         internal List<Person> StartReadExcelPhotoFile(bool onlyMissingPersons)
@@ -53,7 +40,7 @@ namespace Compare.Helpers
                                 Town = worksheet.Cells[i + 1, 5].Value?.ToString().Trim()
                             };
                             person.FullName = person.Name + " " + person.Surname;
-                            person.Path = Path.Combine(Globals.ImageLookupFolder, person.FullName) + ".jpg";
+                            person.ImagePath = Path.Combine(Globals.ImageLookupFolder, person.FullName) + ".jpg";
 
                             if (onlyMissingPersons)
                             {
@@ -82,76 +69,53 @@ namespace Compare.Helpers
             Globals.ExcelOrderListReady = new List<Order>();
             Globals.ExcelOrderListFailed = new List<Order>();
 
-            try
+            var data = GetExcelData();
+
+            foreach (var item in data)
             {
-                using (var file = File.Open(Globals.ExcelFilePath, FileMode.Open))
+                var failed = true;
+                var order = new Order
                 {
-                    using (var package = new ExcelPackage(file))
+                    FullName = item[ExcelHeaders.Headers.Elevnavn],
+                    ChosenImage = item[ExcelHeaders.Headers.Elevnavn],
+                    Email = item[ExcelHeaders.Headers.Email],
+                    TotalAmount = Convert.ToDecimal(item[ExcelHeaders.Headers.Total].Replace("kr.", "")),
+                    OrderProduct = item[ExcelHeaders.Headers.HvadVilDuBestille4],
+                    OrderImagePackage = item[ExcelHeaders.Headers.Billedepakke285kr] ?? item[ExcelHeaders.Headers.Billedepakke185kr] ?? item[ExcelHeaders.Headers.AarsbilledeNavn],
+                    OrderImagePackageColor = item[ExcelHeaders.Headers.Billedepakke285krFarveEllerSortHvid] ?? item[ExcelHeaders.Headers.Billedepakke185krFarveEllerSortHvid],
+                    OrderExtraImagePackage = item[ExcelHeaders.Headers.EkstraBilledepakke],
+                    OrderExtraImagePackageColor = item[ExcelHeaders.Headers.EkstraBilledepakkeFarveEllerSortHvid]
+                };
+
+                if (order.TotalAmount < Int32.Parse(ConfigurationManager.AppSettings["MinimumOrderAmount"]))
+                {
+                    order.Status = Enums.MailSentStatus.BelowAmount;
+                }
+                else if (order.ChosenImage == null)
+                {
+                    order.Status = Enums.MailSentStatus.ChosenImageNumberMissing;
+                }
+                else
+                    failed = false;
+
+                if (!failed)
+                {
+                    var imageFound = false;
+                    var image = FileHelper.GetImageFileForOrder(order, Globals.ImageLookupFolder);
+                    if (!string.IsNullOrEmpty(image))
                     {
-                        var workbook = package.Workbook;
-                        var worksheet = workbook.Worksheets[ConfigurationManager.AppSettings["OrderListWorkSheet"]];
-                        var end = worksheet.Dimension.End;
-
-                        for (int i = 1; i < end.Row; i++)
-                        {
-                            var failed = true;
-                            int orderNumberIsNumber = 0;
-                            if (!int.TryParse(worksheet.Cells[i + 1, 1].Value.ToString().Trim(), out orderNumberIsNumber))
-                                continue;
-
-                            if (worksheet.Cells[i + 1, 1].Value == null)
-                                break;
-
-                            var order = new Order
-                            {
-                                Firstname = worksheet.Cells[i + 1, 6].Value?.ToString().Trim(),
-                                Lastname = worksheet.Cells[i + 1, 7].Value?.ToString().Trim(),
-                                ChosenImage = worksheet.Cells[i + 1, 11].Value == null ? 0 : Int32.Parse(worksheet.Cells[i + 1, 11].Value.ToString().Trim()),
-                                Email = worksheet.Cells[i + 1, 8].Value?.ToString().Trim(),
-                                TotalAmount = double.Parse(worksheet.Cells[i + 1, 5].Value.ToString().Trim()),
-                                OrderProduct = worksheet.Cells[i + 1, 10].Value?.ToString().Trim(),
-                                OrderColor = worksheet.Cells[i + 1, 13].Value?.ToString().Trim(),
-                                OrderImagePackage = worksheet.Cells[i + 1, 12].Value?.ToString().Trim(),
-                                OrderExtraImagePackage = worksheet.Cells[i + 1, 14].Value?.ToString().Trim()
-                            };
-
-                            if (order.TotalAmount < Int32.Parse(ConfigurationManager.AppSettings["MinimumOrderAmount"]))
-                            {
-                                order.Status = Enums.MailSentStatus.BelowAmount;
-                            }
-                            else if (order.ChosenImage == 0)
-                            {
-                                order.Status = Enums.MailSentStatus.ChosenImageNumberMissing;
-                            }
-                            else
-                                failed = false;
-
-                            if (!failed)
-                            {
-                                var imageFound = false;
-                                var image = FileHelper.GetImageFileForOrder(order, Globals.ImageLookupFolder);
-                                if (!string.IsNullOrEmpty(image))
-                                {
-                                    order.ImageFile = image;
-                                    order.Status = Enums.MailSentStatus.ReadyForMail;
-                                    Globals.ExcelOrderListReady.Add(order);
-                                }
-                                else
-                                {
-                                    order.Status = Enums.MailSentStatus.ImageNotFound;
-                                    Globals.ExcelOrderListFailed.Add(order);
-                                }
-                            }
-                            else
-                                Globals.ExcelOrderListFailed.Add(order);
-
-                        }
+                        order.ImageFile = image;
+                        order.Status = Enums.MailSentStatus.ReadyForMail;
+                        Globals.ExcelOrderListReady.Add(order);
+                    }
+                    else
+                    {
+                        order.Status = Enums.MailSentStatus.ImageNotFound;
+                        Globals.ExcelOrderListFailed.Add(order);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                throw;
+                else
+                    Globals.ExcelOrderListFailed.Add(order);
             }
         }
 
@@ -176,7 +140,7 @@ namespace Compare.Helpers
                         ws.Cells[row, 1].Value = person.Name;
                         ws.Cells[row, 2].Value = person.Surname;
                         ws.Cells[row, 3].Value = person.Town;
-                        ws.Cells[row, 4].Value = person.Path;
+                        ws.Cells[row, 4].Value = person.ImagePath;
                     }
 
                     package.Save();
@@ -189,5 +153,85 @@ namespace Compare.Helpers
                 return false;
             }
         }
+
+        private List<Dictionary<ExcelHeaders.Headers, string>> GetExcelData()
+        {
+            var prettyfiedData = new List<Dictionary<ExcelHeaders.Headers, string>>();
+            using (var file = File.Open(Globals.ExcelFilePath, FileMode.Open))
+            {
+                using (var package = new ExcelPackage(file))
+                {
+                    var workbook = package.Workbook;
+                    var worksheet = workbook.Worksheets[1];
+                    var end = worksheet.Dimension.End;
+
+                    for (int i = 2; i <= end.Row; i++)
+                    {
+                        if(worksheet.Cells[i, 1].Value == null)
+                        {
+                            break;
+                        }
+
+                        var prettyfiedRow = new Dictionary<ExcelHeaders.Headers, string>();
+                        for (int j = 0; j < ExcelHeaders.AllHeaders.Length; j++)
+                        {
+                            var value = worksheet.Cells[i, j + 1].Value?.ToString();
+                            if (value != null)
+                            {
+                                value = ReplaceSpecialCharacters(value.Trim());
+                            }
+                            prettyfiedRow.Add(ExcelHeaders.AllHeaders[j], value);
+                        }
+                        prettyfiedData.Add(prettyfiedRow);
+                    }
+                }
+            }
+
+            return prettyfiedData;
+        }
+
+        private string ReplaceSpecialCharacters(string input)
+        {
+            var replacements = new Dictionary<string, string>();
+            replacements.Add("\"", "");
+            replacements.Add("C8", "ø");
+            replacements.Add("C& ", "æ");
+            replacements.Add("|", "-");
+            replacements.Add("/", "-");
+
+            foreach (var r in replacements)
+            {
+                input = input.Replace(r.Key, r.Value);
+            }
+
+            return input;
+        }
+
+        private List<Dictionary<ExcelHeaders.Headers, string>> RemoveDuplicates(List<Dictionary<ExcelHeaders.Headers, string>> data)
+        {
+            foreach (var item in data)
+            {
+                if (!string.IsNullOrEmpty(item[ExcelHeaders.Headers.Email]))
+                {
+                    if (data.Count(x => x[ExcelHeaders.Headers.Email] == item[ExcelHeaders.Headers.Email]) > 1)
+                    {
+
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(item[ExcelHeaders.Headers.MobilForaeldre]))
+                    {
+                        if (data.Count(x => x[ExcelHeaders.Headers.MobilForaeldre] == item[ExcelHeaders.Headers.MobilForaeldre]) > 1)
+                        {
+
+                        }
+                    }
+                }
+            }
+
+            return data;
+        }
+
     }
 }

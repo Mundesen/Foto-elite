@@ -83,8 +83,8 @@ namespace Compare.Views
                     excelHandler.StartReadExcelOrderListFile();
 
                     //Vis resultat
-                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
-                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.FullName + " [" + x.Status + "]");
+                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.FullName + " [" + x.Status + "]");
                 }
                 catch(Exception ex)
                 {
@@ -113,8 +113,8 @@ namespace Compare.Views
                     var mailsSend = MailHelper.SendMails();
 
                     //Vis resultat
-                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
-                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.Firstname + " " + x.Lastname + " [" + x.Status + "]");
+                    LeftMainWindow.ItemsSource = Globals.ExcelOrderListReady.Select(x => x.FullName + " [" + x.Status + "]");
+                    RightMainWindow.ItemsSource = Globals.ExcelOrderListFailed.Select(x => x.FullName + " [" + x.Status + "]");
 
                     System.Windows.MessageBox.Show(string.Format("{0}/{1} mails send!", mailsSend, Globals.ExcelOrderListReady.Count));
                 }

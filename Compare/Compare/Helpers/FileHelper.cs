@@ -48,7 +48,7 @@ namespace Compare.Helpers
         {
             var images = Directory.GetFiles(imageFilePath);
 
-            return images.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x).Split(' ')[0].Replace("_", "").Equals(order.ChosenImage.ToString()));
+            return images.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x).Equals(order.ChosenImage.ToString()));
         }
 
         internal static void SortFilesAndCreateFolders()
@@ -63,7 +63,7 @@ namespace Compare.Helpers
             {
                 var currentOrder = Globals.ExcelOrderListReady[i];
                 var currentOrderNumber = "Order" + orderFolderCounter;
-                var currentFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderColor.Replace("/", ""), string.IsNullOrEmpty(currentOrder.OrderImagePackage) ? currentOrder.OrderProduct : currentOrder.OrderImagePackage);
+                var currentFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderImagePackageColor.Replace("/", ""), string.IsNullOrEmpty(currentOrder.OrderImagePackage) ? currentOrder.OrderProduct : currentOrder.OrderImagePackage);
                 
                 Directory.CreateDirectory(currentFolder);
                 
@@ -83,6 +83,18 @@ namespace Compare.Helpers
                     File.Copy(currentOrder.ImageFile, Path.Combine(extraOrderFolder, imageFileName));
                 }
             }
+        }
+        public static List<string> GetFileNames(string lookFolderFilePath)
+        {
+            var result = new List<string>();
+            var fileNames = Directory.GetFiles(lookFolderFilePath).ToList();
+            foreach (var fileName in fileNames)
+            {
+                var name = Path.GetFileNameWithoutExtension(fileName);
+                result.Add(name);
+            }
+
+            return result;
         }
 
         private static string GetNewImageName(string folder, string imageName)

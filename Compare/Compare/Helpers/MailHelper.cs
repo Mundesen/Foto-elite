@@ -37,17 +37,16 @@ namespace Compare.Helpers
                     var attachement = new Attachment(order.ImageFile);
                     mail.Attachments.Add(attachement);
 
-                    var client = new SmtpClient();
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential(user, password);
-                    client.Port = port;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.Host = host;
-
                     try
                     {
-                        client.Send(mail);
+                        using (var smtp = new SmtpClient(host, port))
+                        {
+                            smtp.UseDefaultCredentials = false;
+                            smtp.Credentials = new NetworkCredential(user, password);
+                            smtp.EnableSsl = true;
+
+                            smtp.Send(mail);
+                        }
                         alreadySentMails.Add(order.Email);
 
                         counter++;
