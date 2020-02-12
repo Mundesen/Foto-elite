@@ -74,7 +74,7 @@ namespace Compare.Helpers
 
                 if (!string.IsNullOrEmpty(currentOrder.OrderExtraImagePackage))
                 {
-                    var extraOrderFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderExtraImagePackage.Replace("/",""));
+                    var extraOrderFolder = Path.Combine(rootFolder, currentOrderNumber, currentOrder.OrderExtraImagePackage.Replace("/",""), currentOrder.OrderExtraImagePackageColor.Replace("/", ""));
 
                     Directory.CreateDirectory(extraOrderFolder);
 
